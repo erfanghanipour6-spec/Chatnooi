@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چت‌روم حرفه‌ای</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+</head>
+<body>
+    <!-- صفحه ورود -->
+    <div id="loginPage" class="page">
+        <div class="glass-card login-card">
+            <h1>💬 چت‌روم حرفه‌ای</h1>
+            <div class="language-selector">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="fa">فارسی</option>
+                    <option value="en">English</option>
+                    <option value="tr">Türkçe</option>
+                    <option value="ar">العربية</option>
+                    <option value="ru">Русский</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="it">Italiano</option>
+                    <option value="ja">日本語</option>
+                    <option value="zh">中文</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+            </div>
+            <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید" maxlength="30">
+            <input type="password" id="passwordInput" placeholder="رمز عبور (فقط برای ادمین)" style="display:none;">
+            <button onclick="login()" id="loginBtn">ورود به چت</button>
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- صفحه چت -->
+    <div id="chatPage" class="page" style="display:none;">
+        <div class="chat-container">
+            <!-- هدر -->
+            <div class="chat-header glass-card">
+                <div class="header-left">
+                    <h2 id="chatTitle">💬 چت‌روم</h2>
+                    <span class="online-count" id="onlineCount">۰ آنلاین</span>
+                </div>
+                <div class="header-right">
+                    <button onclick="toggleTheme()" class="icon-btn" title="تغییر تم">🌓</button>
+                    <button onclick="logout()" class="icon-btn" title="خروج">🚪</button>
+                </div>
+            </div>
+
+            <div class="chat-body">
+                <!-- پنل کاربران آنلاین -->
+                <div class="users-panel glass-card" id="usersPanel">
+                    <h3>👥 کاربران آنلاین</h3>
+                    <div id="usersList"></div>
+                </div>
+
+                <!-- منطقه پیام‌ها -->
+                <div class="messages-area">
+                    <div class="messages-container" id="messagesContainer">
+                        <div id="messagesList"></div>
+                    </div>
+                    
+                    <!-- وضعیت تایپ -->
+                    <div id="typingStatus" class="typing-status"></div>
+
+                    <!-- نوار ارسال پیام -->
+                    <div class="message-input-bar glass-card">
+                        <button onclick="toggleEmojiPicker()" class="emoji-btn">😊</button>
+                        <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..." maxlength="1000" onkeydown="handleKeyDown(event)">
+                        <button onclick="sendMessage()" class="send-btn">📤</button>
+                    </div>
+                    
+                    <!-- انتخابگر ایموجی -->
+                    <div id="emojiPicker" class="emoji-picker glass-card" style="display:none;">
+                        <div class="emoji-grid">
+                            <span onclick="insertEmoji('😊')">😊</span>
+                            <span onclick="insertEmoji('😂')">😂</span>
+                            <span onclick="insertEmoji('❤️')">❤️</span>
+                            <span onclick="insertEmoji('👍')">👍</span>
+                            <span onclick="insertEmoji('🔥')">🔥</span>
+                            <span onclick="insertEmoji('🎉')">🎉</span>
+                            <span onclick="insertEmoji('💯')">💯</span>
+                            <span onclick="insertEmoji('✨')">✨</span>
+                            <span onclick="insertEmoji('🌟')">🌟</span>
+                            <span onclick="insertEmoji('💪')">💪</span>
+                            <span onclick="insertEmoji('👏')">👏</span>
+                            <span onclick="insertEmoji('🙌')">🙌</span>
+                            <span onclick="insertEmoji('🤝')">🤝</span>
+                            <span onclick="insertEmoji('💕')">💕</span>
+                            <span onclick="insertEmoji('😍')">😍</span>
+                            <span onclick="insertEmoji('🥰')">🥰</span>
+                            <span onclick="insertEmoji('😘')">😘</span>
+                            <span onclick="insertEmoji('😁')">😁</span>
+                            <span onclick="insertEmoji('😎')">😎</span>
+                            <span onclick="insertEmoji('🤩')">🤩</span>
+                            <span onclick="insertEmoji('🥳')">🥳</span>
+                            <span onclick="insertEmoji('🎊')">🎊</span>
+                            <span onclick="insertEmoji('🎁')">🎁</span>
+                            <span onclick="insertEmoji('💎')">💎</span>
+                            <span onclick="insertEmoji('👑')">👑</span>
+                            <span onclick="insertEmoji('🏆')">🏆</span>
+                            <span onclick="insertEmoji('⚽')">⚽</span>
+                            <span onclick="insertEmoji('🏀')">🏀</span>
+                            <span onclick="insertEmoji('🎮')">🎮</span>
+                            <span onclick="insertEmoji('🎵')">🎵</span>
+                            <span onclick="insertEmoji('🎶')">🎶</span>
+                            <span onclick="insertEmoji('💻')">💻</span>
+                            <span onclick="insertEmoji('📱')">📱</span>
+                            <span onclick="insertEmoji('💡')">💡</span>
+                            <span onclick="insertEmoji('🔮')">🔮</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- پنل ادمین -->
+            <div id="adminPanel" class="admin-panel glass-card" style="display:none;">
+                <h3>🔧 پنل ادمین</h3>
+                <div class="admin-controls">
+                    <div class="admin-section">
+                        <h4>مدیریت کاربران</h4>
+                        <div id="adminUsersList"></div>
+                    </div>
+                    <div class="admin-section">
+                        <h4>مدیریت پیام‌ها</h4>
+                        <button onclick="clearAllMessages()" class="admin-btn danger">🗑️ پاک کردن تمام پیام‌ها</button>
+                        <button onclick="sendSystemMessage()" class="admin-btn">📢 ارسال پیام سیستمی</button>
+                    </div>
+                    <div class="admin-section">
+                        <h4>آمار</h4>
+                        <div id="adminStats"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
